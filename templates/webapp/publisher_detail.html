@@ -1,0 +1,26 @@
+{% extends 'webapp/base.html' %}
+
+{% block content %}
+<br>
+<div class="card ">
+	<div class="card-header">
+		<div class="row">
+			<div class="col">
+				<h1>Publisher Detail</h1>
+			</div>
+			<div class="col">
+				<a href="{% url 'publisher-delete' publisher.id %}" class="btn btn-danger float-right">Delete Publisher</a>
+			</div>
+		</div>
+	</div>
+	<div class="card-body">
+		<h1>Name: {{publisher.name}}</h1>
+		<h2>RSS Feed: {{publisher.rss_feed}}</h2>
+		<h2>abbreviation: {{publisher.abbreviation}}</h2>
+		<hr>
+		<p style="font-size: 25px;">{{publisher.content}}</p>
+		<a href="{{ request.META.HTTP_REFERER }}" class="btn btn-secondary" class>Back</a>
+	</div>
+</div>
+
+{% endblock  %}

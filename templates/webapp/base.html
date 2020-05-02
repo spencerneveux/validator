@@ -1,0 +1,637 @@
+{% load static %}
+{% load tag_lib %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css">
+
+    <style>
+      /*a {*/
+      /*  color: #333333;*/
+      /*  text-decoration: none;*/
+      /*  }*/
+
+      /*a:hover*/
+      /*{*/
+      /*     color:#333333;*/
+      /*     text-decoration:none;*/
+      /*     cursor:pointer;*/
+      /*}*/
+
+      .article-count {
+        background-color: #FF8800; color: white;
+      }
+
+      .article-stats {
+        margin-left: 9%;
+        font-size: 14px;
+      }
+
+      .article-title {
+        text-decoration: none;
+        color: #333333;
+      }
+
+      #logo {
+        width: 30px;
+        height: 30px;
+      }
+
+      #feed-filter {
+        margin-top:10px;
+        margin-bottom: 5px;
+      }
+
+      .feed-avatar {
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
+      }
+
+      #button-filter {
+        margin-top:5px;
+        margin-bottom: 5px;
+      }
+
+        .modal.left .modal-dialog {
+          position:fixed;
+          right: 0;
+          margin: auto;
+          width: 320px;
+          height: 100%;
+          -webkit-transform: translate3d(0%, 0, 0);
+          -ms-transform: translate3d(0%, 0, 0);
+          -o-transform: translate3d(0%, 0, 0);
+          transform: translate3d(0%, 0, 0);
+      }
+
+      .modal.left .modal-content {
+          height: 100%;
+          overflow-y: auto;
+      }
+
+      .modal.right .modal-body {
+          padding: 15px 15px 80px;
+      }
+
+      .modal.right.fade .modal-dialog {
+          left: -320px;
+          -webkit-transition: opacity 0.3s linear, left 0.3s ease-out;
+          -moz-transition: opacity 0.3s linear, left 0.3s ease-out;
+          -o-transition: opacity 0.3s linear, left 0.3s ease-out;
+          transition: opacity 0.3s linear, left 0.3s ease-out;
+      }
+
+      .modal.right.fade.show .modal-dialog {
+          right: 0;
+      }
+
+      img {
+        width: 100%;
+      }
+
+    </style>
+    {% block extra_css %}
+    {% endblock extra_css %}
+ 
+    <title>The Validator</title>
+
+  </head>
+  <body>
+
+  {% include "registration/loginModal.html" %}
+
+<!--  Error Modal-->
+
+  <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="errorModalTitle">Error</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        You must be signed in to perform this action!
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal left fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <img src="{% static 'images/validatorlogo.png' %}" id="logo" alt="">
+        <h5 class="modal-title ml-1" id="exampleModalLabel">Validator</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <a href="{% url 'home' %}"><i class="fa fa-home mr-2" aria-hidden="true"></i>Home</a>
+            </li>
+            {% if not user.profile.is_online %}
+              <li class="list-group-item">
+                <a class=""  href="{% url 'login' %}"><i class="fa fa-user-plus mr-1" aria-hidden="true"></i>Login/Register</a>
+              </li>
+            {% endif %}
+            {% if user.profile.is_online %}
+              <li class="list-group-item">
+                <a href="{% url 'account' user.id %}"><i class="fa fa-user mr-2" aria-hidden="true"></i></i>Account</a>
+              </li>
+              <li class="list-group-item">
+                <a class="" href="{% url 'account' pk=user.pk %}"><i class="fa fa-cog mr-2" aria-hidden="true"></i>Settings</a>
+              </li>
+              <li class="list-group-item">
+                <a class="" href="{% url 'logout' %}"><i class="fa fa-sign-out mr-2" aria-hidden="true"></i>Logout</a>
+              </li>
+            {% endif %}
+<!--            <li class="list-group-item">-->
+<!--              <a href="{% url 'article-list' %}">Articles</a>-->
+<!--            </li>-->
+<!--            <li class="list-group-item">-->
+<!--              <a href="{% url 'author-list' %}">Authors</a>-->
+<!--            </li>-->
+<!--            <li class="list-group-item">-->
+<!--              <a href="{% url 'publisher-list' %}">Publishers</a>-->
+<!--            </li>-->
+          </ul>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div id="navbar-container">
+  <nav class="navbar fixed-top navbar-light bg-white border-bottom">
+    <a class="navbar-brand" href="{% url 'index' %}">
+      <img src="{% static 'images/validatorlogo.png' %}" id="logo" alt="">
+      Validator</a>
+
+    <div class="ml-auto mr-2">
+      <a href="{% url 'rss-list' %}"><button class="btn btn-white" data-toggle="popover" data-placement="bottom" data-content="Feeds"><i class="fa fa-plus" aria-hidden="true"></i></button></a>
+      <a href="{% url 'home' %}"><button class="btn btn-white" data-toggle="popover" data-placement="bottom" data-content="Home" ><i class="fa fa-home mr-2" aria-hidden="true"></i></button></a>
+      <a href="javascript:void(0);" id="bookmark-list"><button class="btn btn-white" data-toggle="popover" data-placement="bottom" data-content="Bookmarks"><i class="fa fa-bookmark" aria-hidden="true"></i></button></a>
+
+      {% if user.profile.is_online %}
+          <a href="{% url 'account' user.id %}" ><button data-toggle="popover" data-placement="bottom" data-content="Account" class="btn btn-light mr-1">{{user}}</button></a>
+      {% endif %}
+      {% if not user.profile.is_online %}
+        <a href="{% url 'login' %}" id="loginButton"><button class="btn btn-light mr-1">Log In</button></a>
+        <a href="{% url 'user-add' %}"><button class="btn btn-success">Sign Up</button></a>
+      {% endif %}
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="modal" data-target="#exampleModal" aria-expanded="false">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  </nav>
+</div>
+<br>
+<br>
+
+
+
+<div class="container-fluid h-100 mt-2" id="main-content">
+    <div class="row justify-content-center bg-light">
+      <div class="col-2 border-right border-bottom ">
+          <form class="form-inline ">
+            <div class="form-group col">
+              <input class="form-control mr-sm-2" id="feed-filter" type="search" placeholder="Filter Feeds" aria-label="Search">
+            </div>
+          </form>
+      </div>
+      <div class="col-3 border-right border-bottom">
+        <button class="btn btn-small btn-primary float-right mt-2" id="article-filter" data-toggle="popover" data-placement="top" data-content="" type="button" value="{% with user_rss_list|first as first_id%}{{first_id.id}}{% endwith %}">
+		    Popular
+        </button>
+      </div>
+      <div class="col border-bottom mt-1" id="article-detail-header">
+      </div>
+    </div>
+  <div class="row justify-content-center h-100">
+    <div class="col-2 hidden-md-down border-right">
+      <ul class="list-group list-group-flush " id="rss-list">
+        {% for feed in user_rss_list %}
+          <li class="list-group-item">
+            <div class="feed-container">
+              <button class="btn btn-white feed" id="{{feed.id}}" value="{{feed.id}}">
+                <h4 class="d-inline" ><img class="feed-avatar" src="//logo.clearbit.com/{{feed.link}}"></h4>
+                <p class="ml-2 d-inline article-title">{{feed.name}}</p>
+              </button>
+            </div>
+          </li>
+        {% endfor %}
+        {% for feed in user_list %}
+           <li class="list-group-item">
+            <div class="feed-container">
+              <button class="btn btn-white feed" id="{{feed.id}}" value="{{feed.id}}">
+                <h4 class="d-inline" ><img class="feed-avatar" src="//logo.clearbit.com/{{feed.link}}"></h4>
+                <p class="ml-2 d-inline article-title">{{feed.name}}</p>
+              </button>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="col-3 border-right">
+      <ul class="list-group list-group-flush article-list">
+        {% for article in default_article_list %}
+          <li class='list-group-item  '>
+              <div class='article-container'>
+                <h4 class='d-inline'><span class='badge article-count'>{{forloop.counter}}</span></h4>
+                <p class='ml-2 d-inline article-title'><a href="javascript:void(0);"  class="get-article-details" data-value="{{article.id}}" style="text-decoration: none; color: #333333; " >{{article.title}}</a></p>
+                {% if user.profile.article_details %}
+                  <p class='article-stats'>{{article.get_likes}} likes | {{article.get_total_comments}} comments | {{article.date|date:"M d, Y"}} by {{article.author}}</p>
+                {% endif %}
+              </div>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+    <br>
+    <div class="col-sm-7">
+      	<div class="alert alert-success alert-dismissable collapse mt-2" id="alert-success">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        </div>
+      <div class="alert alert-danger alert-dismissable collapse mt-2" id="alert-failure">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        </div>
+      <div id="block-content">
+        {% block content %}
+        {% endblock %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+  <script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
+
+
+
+<script>
+  $(document).ready(function(){
+    $('[data-toggle="popover"]').popover({trigger: 'hover'});
+
+
+
+    $("#loginButton").on('click', function(){
+      $("#loginModal").modal('show');
+    });
+
+    $("#feed-filter").on("keyup", function() {
+      var value = $(this).val().toLowerCase();
+      $("#rss-list li").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+
+    $(document).on('click', '.get-article-details', function(){
+      var article_id = $(this).attr('data-value');
+      var url = "{% url 'article-detail' 12345 %} #article-detail-content".replace(/12345/, article_id.toString());
+      var header = "{% url 'article-detail' 12345 %} #article-interaction-container".replace(/12345/, article_id.toString());
+
+      $("#article-detail-header").load(header, function() {
+            $('[data-toggle="popover"]').popover({trigger: 'hover'});
+
+      });
+      $("#block-content").load(url);
+    });
+
+    $(document).on('click', '#article-analysis', function(){
+       var article_id = $(this).attr('data-value');
+       var url = "{% url 'article-score' 12345 %} #block-content".replace(/12345/, article_id.toString());
+       $("#block-content").load(url, function(){
+         $('#table1').bootstrapTable();
+         $('#table2').bootstrapTable();
+
+       });
+    });
+
+    $(document).on('click', '#bookmark-list', function(){
+       var url = "{% url 'bookmark-list' %} #block-content";
+       $("#block-content").load(url);
+    });
+
+    $(document).on('click', '.bookmark-item', function(){
+        var article_id = $(this).attr('data-value');
+        var url = "{% url 'article-detail' 12345 %} #article-detail-content".replace(/12345/, article_id.toString());
+        var header = "{% url 'article-detail' 12345 %} #article-interaction-container".replace(/12345/, article_id.toString());
+
+        $("#article-detail-header").load(header);
+        $("#block-content").load(url);
+    });
+
+    $(document).on('click', '.remove-bookmark', function(){
+        var parents = $(this).parents();
+        var article_id = $(this).val();
+        $.ajax({
+            url: "{% url 'remove-bookmark' %}",
+            data: {
+                "article-id": article_id
+            },
+            dataType: "json",
+            success: function(data) {
+                if (data["Test"] == true) {
+                  $(parents[1]).hide(800, function(){
+                    $(parents[1].remove());
+                  });
+                }
+            }
+          });
+    });
+
+    $(".feed").click(function(){
+      $(".article-list").empty();
+      var rss_id = $(this).val();
+      $("#article-filter").val(rss_id);
+
+      $.ajax({
+          url: "{% url 'get-popular-rss-articles' %}",
+          data: {
+              "rss-id": rss_id
+          },
+          dataType: "json",
+          success: function(data) {
+              if (data['Test'] == true){
+                var article_list = data['article_list'];
+                var stats = data['article_stats'];
+
+                var count = 0;
+                for (article in article_list) {
+                  count += 1;
+                  var id = article_list[article]['id'];
+                  var title = article_list[article]['title'];
+                  var author = article_list[article]['author'];
+                  var date_obj = new Date(article_list[article]['date']);
+                  var date = date_obj.toDateString()
+
+                  var url = "/app/article/" + id;
+                  var likes = stats[id][1];
+                  var comment = stats[id][3];
+                  console.log(likes);
+                  $(".article-list").append("" +
+                          "<li class='list-group-item'>" +
+                            "<div class='article-container'>" +
+                              "<h4 class='d-inline'><span class='badge article-count'>" + count + "</span></h4>" +
+                              "<p class='ml-2 d-inline article-title'><a href='javascript:void(0);'  class='get-article-details' data-value="+'' + id + '' + " + style='text-decoration: none; color: #333333; '>" + title + "</a></p>" +
+                              "{% if user.profile.article_details %}\n" +
+                              "<p class='article-stats'>" + likes + " likes | " + comment + " comments | " + date + " by " + author + "</p>" +
+                              "{% endif %}" +
+                            "</div>" +
+                          "</li>"
+                  )
+                }
+              }
+          }
+      });
+    });
+
+     $(document).on('click', '.like', function(){
+       var user_not_logged_in = "{{request.user.is_anonymous}}";
+        if (user_not_logged_in) {
+          $("#errorModal").modal('show');
+        }else {
+          var article_id = $(this).val()
+          if (article_id) {
+              $.ajax({
+                  url: "{% url 'like' %}",
+                  data: {
+                      "article-id": article_id,
+                      "operation": "like",
+                  },
+                  dataType: "json",
+                  success: function(data) {
+                    console.log(data['Test']);
+                      if (data['Test'] == 'Like'){
+                        $(this).addClass('active');
+                          $('#alert-success').show();
+                          $('#alert-success').text("Success! Liked");
+                          $('#alert-success').fadeOut(2000);
+                      }else if(data['Test'] == 'Liked') {
+                        $('#alert-failure').show();
+                        $('#alert-failure').text("You've already liked this");
+                        $('#alert-failure').fadeOut(2000);
+                      }
+                  }
+              });
+          }
+        }
+
+     });
+
+    $(document).on('click', '.dislike', function(){
+      var user_not_logged_in = "{{request.user.is_anonymous}}";
+        if (user_not_logged_in) {
+          $("#errorModal").modal('show');
+        }else {
+          var article_id = $(this).val()
+          if(article_id) {
+            $.ajax({
+              url: "{% url 'like' %}",
+              data: {
+                  "article-id": article_id,
+                  "operation": "dislike",
+              },
+              dataType: "json",
+              success: function(data) {
+                if (data['Test'] == 'Dislike') {
+                  $(this).addClass('active');
+                  $('#alert-success').show();
+                  $('#alert-success').text("Success! Disliked");
+                  $('#alert-success').fadeOut(2000);
+                } else if (data['Test'] == 'Disliked') {
+                  $('#alert-failure').show();
+                  $('#alert-failure').text("You've already disliked this");
+                  $('#alert-failure').fadeOut(2000);
+                }
+              }
+            });
+          }
+        }
+
+    });
+
+    $(".add").click(function(){
+        var article_id = $(this).val()
+        if (article_id) {
+          $.ajax({
+            url: "{% url 'favorite' %}",
+            data: {
+                "article-id": article_id
+            },
+            dataType: "json",
+            success: function(data) {
+                if (data["Test"] == true) {
+                    $('.alert').removeClass("collapse");
+                    $('.alert').text("Success! Added to favorites");
+                    $('.alert').fadeOut(2000);
+                }
+            }
+          });
+        }
+    });
+
+    $(document).on('click', '.bookmark', function(){
+        var user_not_logged_in = "{{request.user.is_anonymous}}";
+        if (user_not_logged_in) {
+          $("#errorModal").modal('show');
+        }else {
+          var article_id = $(this).val();
+          if (article_id) {
+            $.ajax({
+              url: "{% url 'bookmark' %}",
+              data: {
+                  "article-id": article_id
+              },
+              dataType: "json",
+              success: function(data) {
+                console.log(data);
+                  if (data["Test"] == true) {
+                      $('#alert-success').show();
+                      $('#alert-success').text("Success! Bookmarked");
+                      $('#alert-success').fadeOut(2000);
+                  }else if (data['Test'] == false) {
+                    $('#alert-failure').show();
+                    $('#alert-failure').text("Already bookmarked");
+                    $('#alert-failure').fadeOut(2000);
+                  }
+              }
+            });
+          }
+        }
+    });
+
+    $("#article-filter").hover(function(){
+      var state = $(this).text().trim();
+      if (state == "Popular") {
+        $(this).attr("data-content", "Latest");
+      }else {
+        $(this).attr("data-content", "Popular");
+      }
+    });
+
+     $("#article-filter").click(function(){
+       $(".article-list").empty();
+       var text = $(this).text();
+       var rss_id = $(this).val();
+
+       if (text == "Latest") {
+         $(this).text("Popular");
+         $.ajax({
+            url: "{% url 'get-popular-rss-articles' %}",
+            data: {
+                "rss-id": rss_id
+            },
+            dataType: "json",
+            success: function(data) {
+                if (data["Test"] == true) {
+                  var article_list = data['article_list'];
+                  var stats = data['article_stats'];
+
+                  var count = 0;
+                  for (article in article_list) {
+                    count += 1;
+                    var id = article_list[article]['id'];
+                    var title = article_list[article]['title'];
+                    var author = article_list[article]['author'];
+                    var date_obj = new Date(article_list[article]['date']);
+                    var date = date_obj.toDateString()
+
+                    var likes = stats[id][1];
+                    var comment = stats[id][3];
+                    console.log(likes);
+                    $(".article-list").append("" +
+                            "<li class='list-group-item'>" +
+                              "<div class='article-container'>" +
+                                "<h4 class='d-inline'><span class='badge article-count'>" + count + "</span></h4>" +
+                                "<p class='ml-2 d-inline article-title'><a href='javascript:void(0);'  class='get-article-details' data-value="+'' + id + '' + " + style='text-decoration: none; color: #333333; '>" + title + "</a></p>" +
+                                "{% if user.profile.article_details %}\n" +
+                                "<p class='article-stats'>" + likes + " likes | " + comment + " comments | " + date + " by " + author + "</p>" +
+                                "{% endif %}\n" +
+                              "</div>" +
+                            "</li>"
+                    )
+                  }
+                }
+            }
+          });
+       }
+       else {
+         $(this).text("Latest");
+         $.ajax({
+            url: "{% url 'get-latest-rss-articles' %}",
+            data: {
+                "rss-id": rss_id
+            },
+            dataType: "json",
+            success: function(data) {
+                if (data["Test"] == true) {
+                  var article_list = data['article_list'];
+                  var stats = data['article_stats'];
+
+                  var count = 0;
+                  for (article in article_list) {
+                    count += 1;
+                    var id = article_list[article]['id'];
+                    var title = article_list[article]['title'];
+                    var author = article_list[article]['author'];
+                    var date_obj = new Date(article_list[article]['date']);
+                    var date = date_obj.toDateString()
+
+                    var url = "/app/article/" + id;
+                    var likes = stats[id][1];
+                    var comment = stats[id][3];
+                    console.log(likes);
+                    $(".article-list").append("" +
+                            "<li class='list-group-item'>" +
+                              "<div class='article-container'>" +
+                                "<h4 class='d-inline'><span class='badge article-count'>" + count + "</span></h4>" +
+                                "<p class='ml-2 d-inline article-title'><a href='javascript:void(0);'  class='get-article-details' data-value="+'' + id + '' + " + style='text-decoration: none; color: #333333; '>" + title + "</a></p>" +
+                                "{% if user.profile.article_details %}\n" +
+                                "<p class='article-stats'>" + likes + " likes | " + comment + " comments | " + date + " by " + author + "</p>" +
+                                "{% endif %}\n" +
+                              "</div>" +
+                            "</li>"
+                    )
+                  }
+                }
+            }
+          });
+       }
+     });
+
+
+  });
+
+</script>
+
+{% block extra_js %}
+{% endblock extra_js %}
+    
+  </body>
+</html>
