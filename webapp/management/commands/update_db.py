@@ -19,10 +19,11 @@ from static.python.crawler import Crawler
 # from ...static.python.knowledge import Knowledge
 # from ...static.python.metadata import Metadata
 # from ...static.python.score import Score
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 os.environ[
     "GOOGLE_APPLICATION_CREDENTIALS"
-] = "C:/Users/spenc/PycharmProjects/NLP/NLP/api.json"
+] = os.path.join(BASE_DIR, "api.json")
 
 class Command(BaseCommand):
     help = 'Testing RSSFeed'
