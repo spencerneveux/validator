@@ -19,7 +19,7 @@ from static.python.crawler import Crawler
 # from ...static.python.knowledge import Knowledge
 # from ...static.python.metadata import Metadata
 # from ...static.python.score import Score
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 os.environ[
     "GOOGLE_APPLICATION_CREDENTIALS"
