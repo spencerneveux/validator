@@ -128,9 +128,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-LOGIN_REDIRECT_URL = '/app/home'
+LOGIN_REDIRECT_URL = '/webapp/home'
 
-AUTH_PROFILE_MODULE = 'app.Profile'
+AUTH_PROFILE_MODULE = 'webapp.Profile'
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = 'smtp.gmail.com'
