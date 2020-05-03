@@ -1,19 +1,15 @@
 import os
-import requests
 
 from django.core.management.base import BaseCommand, CommandError
 from webapp.models import (
     RSSFeed,
     Article,
     Category,
-    Entity,
-    Score,
-    Knowledge,
-    MetaData
+    Entity
 )
 
-from static.python.nlp import NLP
-from static.python.crawler import Crawler
+from webapp.static.python.nlp import NLP
+from webapp.static.python.crawler import Crawler
 # from ...static.python.category import Category
 # from ...static.python.entity import Entity
 # from ...static.python.knowledge import Knowledge

@@ -413,7 +413,7 @@
 
      $(document).on('click', '.like', function(){
        var user_not_logged_in = "{{request.user.is_anonymous}}";
-        if (user_not_logged_in) {
+        if (user_not_logged_in == true) {
           $("#errorModal").modal('show');
         }else {
           var article_id = $(this).val()
@@ -446,7 +446,7 @@
 
     $(document).on('click', '.dislike', function(){
       var user_not_logged_in = "{{request.user.is_anonymous}}";
-        if (user_not_logged_in) {
+        if (user_not_logged_in == true) {
           $("#errorModal").modal('show');
         }else {
           var article_id = $(this).val()
@@ -498,7 +498,7 @@
 
     $(document).on('click', '.bookmark', function(){
         var user_not_logged_in = "{{request.user.is_anonymous}}";
-        if (user_not_logged_in) {
+        if (user_not_logged_in == true) {
           $("#errorModal").modal('show');
         }else {
           var article_id = $(this).val();
