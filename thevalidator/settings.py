@@ -128,7 +128,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-LOGIN_REDIRECT_URL = '/webapp/home'
+LOGIN_REDIRECT_URL = '/home'
 
 AUTH_PROFILE_MODULE = 'webapp.Profile'
 
