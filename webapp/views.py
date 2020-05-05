@@ -10,6 +10,10 @@ from django.views.generic import ListView, DetailView, TemplateView
 from django.http import JsonResponse
 from django.contrib.auth.signals import user_logged_in, user_logged_out
 from django.dispatch import receiver
+from django.core.mail import send_mail
+
+from .forms import ContactForm
+
 
 
 from django.views.generic.edit import (
@@ -44,8 +48,24 @@ from .models import (
 # =========================
 # Base Views
 # =========================
-class IndexView(TemplateView):
+class IndexView(FormView):
     template_name = "webapp/index.html"
+    form_class = ContactForm
+    success_url = '.'
+
+    def get_context_data(self, **kwargs):
+        context = super(IndexView, self).get_context_data(**kwargs)
+        return context
+
+    def form_valid(self, form):
+        from_email = form.cleaned_data['from_email']
+        subject = form.cleaned_data['subject']
+        message = form.cleaned_data['message']
+        send_mail(subject, message, from_email,
+                  ['projectvalidator2019@gmail.com', ])
+
+        return super(IndexView, self).form_valid(form)
+
 
 
 class HomeView(ListView):
