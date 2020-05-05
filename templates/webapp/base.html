@@ -296,12 +296,7 @@
 <script>
   $(document).ready(function(){
     $('[data-toggle="popover"]').popover({trigger: 'hover'});
-
-
-
-    $("#loginButton").on('click', function(){
-      $("#loginModal").modal('show');
-    });
+  
 
     $("#feed-filter").on("keyup", function() {
       var value = $(this).val().toLowerCase();
