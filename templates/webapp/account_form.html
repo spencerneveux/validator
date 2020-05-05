@@ -2,17 +2,7 @@
 {% load crispy_forms_tags %}
 {% load static %}
 
-<!--{% block extra_css %}-->
-<!--<style type="text/css">-->
-<!--	#user-profile-pic {-->
-<!--		 width: 150px;-->
-<!--  		height: 150px;-->
-<!--  		border-radius: 50%;-->
-<!--  		margin-bottom: 10px;-->
-<!--	}-->
-<!--</style>-->
-<!--	-->
-<!--{% endblock extra_css %}-->
+
 
 {% block extra_js %}
 {{block.super}}
@@ -206,10 +196,7 @@
 					<h1>Settings</h1>
 					<h5>General Settings</h5>
 					<hr>
-					<div class="custom-control custom-checkbox">
-						<input type="checkbox" class="custom-control-input" id="set-dark-mode">
-						<label class="custom-control-label" for="set-dark-mode">Dark Mode</label>
-					</div>
+
 					<div class="custom-control custom-checkbox">
 						<input type="checkbox" class="custom-control-input" id="set-article-details" checked="true">
 					  	<label class="custom-control-label" for="set-article-details">Article Details</label>
