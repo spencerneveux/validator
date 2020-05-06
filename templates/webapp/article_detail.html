@@ -43,7 +43,7 @@
 	<button class="btn btn-light float-right like" value="{{article.id}}" data-toggle="popover" data-placement="bottom" data-content="Like"><i class="fa fa-thumbs-up" aria-hidden="true"></i></button>
 	<button class="btn btn-light float-right dislike" value="{{article.id}}" data-toggle="popover" data-placement="bottom" data-content="Dislike"><i class="fa fa-thumbs-down" aria-hidden="true"></i></button>
 	{% if request.user.profile.is_online %}
-	<a href="{% url 'comment-add' article_id=article.id %}" id="comment"><button class="btn btn-light float-right like" value="{{article.id}}" data-toggle="popover" data-placement="bottom" data-content="Comment"><i class="fa fa-comment" aria-hidden="true"></i></button></a>
+	<a href="{% url 'comment-add' article_id=article.id %}" id="comment"><button class="btn btn-light float-right" value="{{article.id}}" data-toggle="popover" data-placement="bottom" data-content="Comment"><i class="fa fa-comment" aria-hidden="true"></i></button></a>
 	{% endif %}
 </div>
 <div class="container container-fluid" id="article-detail-content">
