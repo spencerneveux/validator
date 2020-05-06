@@ -33,12 +33,12 @@
 {% block content %}
 
 <div id="article-interaction-container">
+    <span id="article-id" data-value="{{ article.link }}"></span>
 	<a href="javascript:void(0);" id="article-analysis" data-value="{{article.id}}" data-toggle="popover" data-placement="bottom" data-content="Analysis"><button class="btn btn-white text-dark mb-1"><i class="fa fa-bar-chart" aria-hidden="true"></i></button></a>
 	<button class="btn btn-white text-dark bookmark mb-1" value="{{article.id}}" data-toggle="popover" data-placement="bottom" data-content="Bookmark This Article"><i class="fa fa-bookmark" aria-hidden="true"></i></button>
 	<button class="btn btn-light float-right" type="button" id="share-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ><i class="fa fa-share" aria-hidden="true"></i></button>
 	<div class="dropdown-menu" aria-labelledby="share-button" >
-	  <a class="dropdown-item" href="#"><i class="fa fa-envelope-o mr-1" aria-hidden="true"></i>Send To Friend</a>
-	  <a class="dropdown-item" href="#"><i class="fa fa-twitter mr-1" aria-hidden="true"></i>Twitter</a>
+	  <a class="dropdown-item" href="#" id="emailFriend"><i class="fa fa-envelope-o mr-1" aria-hidden="true"></i>Send To Friend</a>
 	</div>
 	<button class="btn btn-light float-right like" value="{{article.id}}" data-toggle="popover" data-placement="bottom" data-content="Like"><i class="fa fa-thumbs-up" aria-hidden="true"></i></button>
 	<button class="btn btn-light float-right dislike" value="{{article.id}}" data-toggle="popover" data-placement="bottom" data-content="Dislike"><i class="fa fa-thumbs-down" aria-hidden="true"></i></button>

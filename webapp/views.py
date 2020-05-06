@@ -12,7 +12,7 @@ from django.contrib.auth.signals import user_logged_in, user_logged_out
 from django.dispatch import receiver
 from django.core.mail import send_mail
 
-from .forms import ContactForm
+from .forms import ContactForm, EmailForm
 
 
 
@@ -58,7 +58,6 @@ class IndexView(FormView):
         return context
 
     def form_valid(self, form):
-
         from_email = form.cleaned_data['from_email']
         subject = form.cleaned_data['subject']
         message = form.cleaned_data['message']
@@ -67,15 +66,27 @@ class IndexView(FormView):
         return super(IndexView, self).form_valid(form)
 
 
-
-class HomeView(ListView):
-    model = Article
+class HomeView(FormView):
+    form_class = EmailForm
     template_name = "webapp/home.html"
+    success_url = '.'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['rssfeed_list'] = RSSFeed.objects.all()
         return context
+
+    def form_valid(self, form):
+        user = self.request.user
+        from_email = self.request.user.email
+        to_email = form.cleaned_data['to_email']
+        article_link = form.cleaned_data['article_link']
+        subject = f"Your friend {user}, has shared an article with you!"
+        message = form.cleaned_data['message']
+        message += f"\n{article_link}"
+
+        send_mail(subject, message, from_email, [to_email])
+        return super(HomeView, self).form_valid(form)
 
 # =========================
 # User
@@ -642,3 +653,4 @@ def update_profile(request):
         'user_form': user_form,
         'profile_form': profile_form
     })
+
