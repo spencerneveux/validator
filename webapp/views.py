@@ -58,12 +58,12 @@ class IndexView(FormView):
         return context
 
     def form_valid(self, form):
+
         from_email = form.cleaned_data['from_email']
         subject = form.cleaned_data['subject']
         message = form.cleaned_data['message']
-        send_mail(subject, message, from_email,
-                  ['projectvalidator2019@gmail.com', ])
 
+        send_mail(subject, message, from_email, ['spencerneveux@gmail.com'], fail_silently=False)
         return super(IndexView, self).form_valid(form)
 
 
