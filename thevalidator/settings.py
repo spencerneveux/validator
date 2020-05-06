@@ -26,6 +26,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.getenv("SECRET_KEY")
 SOCIAL_AUTH_GITHUB_KEY = os.getenv("GITHUB_KEY")
 SOCIAL_AUTH_GITHUB_SECRET= os.getenv("GITHUB_SECRET")
+SOCIAL_AUTH_GOOGLE_KEY = os.getenv("GOOGLE_KEY")
+SOCIAL_AUTH_GOOGLE_SECRET = os.getenv("GOOGLE_SECRET")
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -140,6 +142,7 @@ STATIC_URL = '/static/'
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'social_core.backends.github.GithubOAuth2',
+    'social_core.backends.google.GoogleOAuth2'
 )
 
 LOGIN_URL = 'login'
