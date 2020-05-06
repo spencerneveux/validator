@@ -83,7 +83,7 @@ class HomeView(FormView):
         article_link = form.cleaned_data['article_link']
         subject = f"Your friend {user}, has shared an article with you!"
         message = form.cleaned_data['message']
-        message += f"\n{article_link}"
+        message += f"\nArticle - {article_link}"
 
         send_mail(subject, message, from_email, [to_email])
         return super(HomeView, self).form_valid(form)

@@ -151,6 +151,11 @@ urlpatterns = [
     # ===================
     path("bookmark/", BookmarkListView.as_view(), name="bookmark-list"),
 
+    #====================
+    # Social
+    #====================
+    path("social/", include('social_django.urls'), name="social"),
+
     # ===================
     # Utility
     # ===================

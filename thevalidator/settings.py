@@ -24,6 +24,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("SECRET_KEY")
+SOCIAL_AUTH_GITHUB_KEY = os.getenv("GITHUB_KEY")
+SOCIAL_AUTH_GITHUB_SECRET= os.getenv("GITHUB_SECRET")
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -45,6 +48,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'django_extensions',
     'django_tables2',
+    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -55,6 +59,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'thevalidator.urls'
@@ -73,6 +78,8 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'webapp.context_processors.get_rss_list',
                 'webapp.context_processors.get_rss_articles',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect'
             ],
         },
     },
@@ -129,9 +136,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-
 LOGIN_REDIRECT_URL = '/home'
 
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'social_core.backends.github.GithubOAuth2',
+)
+
+LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'
 AUTH_PROFILE_MODULE = 'webapp.Profile'
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
